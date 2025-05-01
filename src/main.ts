@@ -25,8 +25,7 @@ world
   .addComponent(Position, new Position(innerWidth / 2, innerHeight / 2))
   .addComponent(Velocity)
   .addComponent(Rotation)
-  .addComponent(AngularVelocity); // makes it spin
+  .addComponent(AngularVelocity);
 
-/* One-time bootstrapping – no requestAnimationFrame needed */
 await world.prepare();
 world.initialize(); // from here Pixi’s ticker calls world.execute()

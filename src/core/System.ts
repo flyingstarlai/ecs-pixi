@@ -1,5 +1,7 @@
 import type { World } from "./World";
 import { Query } from "./Query";
+import { Entity } from "./Entity.ts";
+import { Component } from "./Component.ts";
 
 /**
  * Base class for all game systems.
@@ -25,7 +27,9 @@ export abstract class System {
   }
 
   /** Fluent entity filter identical to the previous API. */
-  protected query(builder: (q: Query) => Query) {
-    return builder(new Query(this.#world))[Symbol.iterator]();
+  protected query<B extends Component[]>(
+    build: (q: Query<[]>) => Query<B>,
+  ): Iterable<[Entity, ...B]> {
+    return build(new Query<[]>(this.#world));
   }
 }

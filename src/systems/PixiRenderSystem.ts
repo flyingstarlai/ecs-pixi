@@ -1,8 +1,9 @@
 // src/systems/RenderSystemPixi.ts
-import { Application, Assets, Sprite, Texture } from "pixi.js";
+import { Application, Sprite } from "pixi.js";
 import { System } from "../core/System";
 import { Position } from "../components/Position";
 import { Rotation } from "../components/Rotation";
+import { loadBundle, registerSpriteBundles } from "../assets/Assets.ts";
 
 /**
  * A Pixi v8 renderer that follows the official “bunny” example:
@@ -12,7 +13,8 @@ import { Rotation } from "../components/Rotation";
  */
 export class PixiRenderSystem extends System {
   private app!: Application;
-  private bunnyTex!: Texture;
+  private uiTex!: Awaited<ReturnType<typeof loadBundle<"ui">>>;
+
   private sprites = new Map<number, Sprite>(); // Entity.id → Sprite
 
   /* ─── Lifecycle ────────────────────────────────────────────── */
@@ -24,8 +26,8 @@ export class PixiRenderSystem extends System {
     await this.app.init({ background: "#1099bb", resizeTo: window });
     document.getElementById("pixi-container")!.appendChild(this.app.canvas);
 
-    // ❷ load the texture once
-    this.bunnyTex = await Assets.load("/assets/bunny.png");
+    registerSpriteBundles();
+    this.uiTex = await loadBundle("ui");
 
     // ❸ make Pixi drive the whole ECS
     this.app.ticker.add(({ deltaMS }) => {
@@ -35,22 +37,21 @@ export class PixiRenderSystem extends System {
 
   /** Spawn sprites for all current entities that need one */
   initialize(): void {
-    for (const e of this.query((q) => q.with(Position).with(Rotation))) {
-      this.spawnSprite(e.id);
+    for (const [entity] of this.query((q) => q.with(Position).with(Rotation))) {
+      this.spawnSprite(entity.id);
     }
   }
 
   /** Sync entity state → Pixi display objects */
   execute(): void {
-    for (const e of this.query((q) => q.with(Position).with(Rotation))) {
-      const { x, y } = e.readComponent(Position)!;
-      const { angle } = e.readComponent(Rotation)!;
+    for (const [entity, pos, rot] of this.query((q) =>
+      q.with(Position).with(Rotation),
+    )) {
+      /* ---------- FIX: use entity.id, not pos.entityId ---------- */
+      const sp = this.sprites.get(entity.id) ?? this.spawnSprite(entity.id);
 
-      let sp = this.sprites.get(e.id);
-      if (!sp) sp = this.spawnSprite(e.id); // late-born entity
-
-      sp.position.set(x, y);
-      sp.rotation = angle * (Math.PI / 180); // deg → rad
+      sp.position.set(pos.x, pos.y);
+      sp.rotation = rot.angle * (Math.PI / 180);
     }
   }
 
@@ -61,7 +62,7 @@ export class PixiRenderSystem extends System {
   /* ─── Helpers ──────────────────────────────────────────────── */
 
   private spawnSprite(id: number): Sprite {
-    const sp = new Sprite(this.bunnyTex);
+    const sp = new Sprite(this.uiTex.monster);
     sp.anchor.set(0.5);
     this.app.stage.addChild(sp);
     this.sprites.set(id, sp);

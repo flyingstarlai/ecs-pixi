@@ -3,31 +3,31 @@ import { Component, ComponentType } from "./Component";
 import { World } from "./World";
 
 /**
- * Light-weight fluent filter.  Type-safety here is deliberately relaxed so that
- * the API stays terse; you still get strong typing once you read/write the
- * components from the entity itself.
+ * `Query<[]>::with(Position)::with(Velocity)`  →  Query<[Position, Velocity]>
  */
-export class Query {
-  private required = new Set<ComponentType>();
+export class Query<Cs extends Component[]>
+  implements Iterable<[Entity, ...Cs]>
+{
+  private readonly required: ComponentType<Component>[] = [];
 
   constructor(private readonly world: World) {}
 
-  with<C extends Component>(component: ComponentType<C>): this {
-    this.required.add(component as ComponentType);
-    return this;
+  /* ── fluent builder that extends the component tuple ─────────── */
+  with<C extends Component>(ctor: ComponentType<C>): Query<[...Cs, C]> {
+    this.required.push(ctor);
+    // cast because we just widened the generic parameter
+    return this as unknown as Query<[...Cs, C]>;
   }
 
-  /** Iterate entities matching *all* required components. */
-  *entities(): IterableIterator<Entity> {
+  /* ── iterator that yields [entity, …components] ───────────────── */
+  *[Symbol.iterator](): IterableIterator<[Entity, ...Cs]> {
     outer: for (const e of this.world.entities) {
-      for (const req of this.required) {
-        if (!e.has(req)) continue outer;
-      }
-      yield e;
-    }
-  }
+      // 1️⃣  quick mismatch test
+      for (const c of this.required) if (!e.has(c)) continue outer;
 
-  [Symbol.iterator](): IterableIterator<Entity> {
-    return this.entities();
+      // 2️⃣  collect the components – type-safe for the caller
+      const comps = this.required.map((c) => e.readComponent(c)!) as Cs;
+      yield [e, ...comps];
+    }
   }
 }

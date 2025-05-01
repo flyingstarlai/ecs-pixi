@@ -11,8 +11,7 @@ export class InputSystem extends System {
 
   override execute(): void {
     // All entities with Velocity get the same simple WASD control
-    for (const e of this.query((q) => q.with(Velocity))) {
-      const vel = e.writeComponent(Velocity);
+    for (const [, vel] of this.query((q) => q.with(Velocity))) {
       vel.vx =
         (this.keys.has("ArrowRight") ? 1 : 0) -
         (this.keys.has("ArrowLeft") ? 1 : 0);
