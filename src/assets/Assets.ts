@@ -7,17 +7,28 @@ import { Assets, Texture } from "pixi.js";
 
 export const spriteBundles = {
   ui: {
-    bunny: "/assets/bunny.png",
-    commandUp: "/assets/ui/command-up.png",
+    commandLeft: "/assets/ui/Puzzle_Left.png",
+    commandRight: "/assets/ui/Puzzle_Right.png",
+    commandUp: "/assets/ui/Puzzle_Up.png",
+    commandDown: "/assets/ui/Puzzle_Down.png",
     commandEvent: "/assets/ui/command-event.png",
     controlPlay: "/assets/ui/control-play.png",
     controlStop: "/assets/ui/control-stop.png",
-    energy: "/assets/energy.png",
-    monster: "/assets/monster.png",
-    background: "/assets/background.png",
   },
   hero: {
-    heroEss: "/assets/hero/hero-ess.png",
+    atlas: "/assets/hero/Knight_Atlas.json",
+  },
+  enemy: {
+    monster: "/assets/monster.png",
+  },
+  environment: {
+    background: "/assets/background.png",
+  },
+  item: {
+    donut: "/assets/donut.png",
+    donutEmpty: "/assets/donut_empty.png",
+    star: "/assets/star.png",
+    flag: "/assets/flag.png",
   },
 } as const;
 
@@ -43,7 +54,7 @@ export function registerSpriteBundles(): void {
  *
  * ```ts
  * const ui = await loadBundle('ui');
- * const bunny = ui.bunny;   // Texture, auto-typed ✓
+ * const play = ui.controlPlay;   // Texture, auto-typed ✓
  * ```
  */
 export async function loadBundle<B extends BundleName>(

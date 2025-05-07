@@ -34,4 +34,18 @@ export class Entity {
   has<C extends Component>(ctor: ComponentType<C>): boolean {
     return this.components.has(ctor);
   }
+
+  /**
+   * List all components currently attached to this entity.
+   * Returns an array of { ctor, instance }.
+   */
+  public listComponents(): {
+    ctor: ComponentType<Component>;
+    instance: Component;
+  }[] {
+    return Array.from(this.components.entries()).map(([ctor, instance]) => ({
+      ctor,
+      instance,
+    }));
+  }
 }

@@ -9,6 +9,7 @@ export class Query<Cs extends Component[]>
   implements Iterable<[Entity, ...Cs]>
 {
   private readonly required: ComponentType<Component>[] = [];
+  private any: ComponentType<Component>[] = [];
 
   constructor(private readonly world: World) {}
 
@@ -17,6 +18,13 @@ export class Query<Cs extends Component[]>
     this.required.push(ctor);
     // cast because we just widened the generic parameter
     return this as unknown as Query<[...Cs, C]>;
+  }
+
+  withAny<Os extends Component[]>(
+    ...ctors: { [K in keyof Os]: ComponentType<Os[K]> }
+  ): Query<Cs> {
+    this.any.push(...(ctors as ComponentType<Component>[]));
+    return this;
   }
 
   /* ── iterator that yields [entity, …components] ───────────────── */

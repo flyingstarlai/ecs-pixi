@@ -2,16 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/style.css">
-    <title>PixiJS - Template</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>Coding Adventure</title>
+    <link rel="stylesheet" href="src/style.css">
 </head>
 
 <body>
     <div id="app">
         <div id="pixi-container"></div>
     </div>
+    <!-- Success Popup -->
+    <div
+            id="popup-success"
+            class="fixed inset-0 flex items-center justify-center z-50 hidden"
+    >
+        <div class="absolute inset-0 bg-black/60"></div>
+        <div
+                class="relative bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center"
+        >
+            <h2 class="text-3xl font-bold mb-4 text-green-600">
+                Level Berhasil!
+            </h2>
+
+            <div id="stars" class="flex justify-center mb-4 space-x-2">
+                <img
+                        id="star1"
+                        src="/assets/starEmpty.png"
+                        alt="star"
+                        class="w-8 h-8"
+                />
+                <img
+                        id="star2"
+                        src="/assets/starEmpty.png"
+                        alt="star"
+                        class="w-8 h-8"
+                />
+                <img
+                        id="star3"
+                        src="/assets/starEmpty.png"
+                        alt="star"
+                        class="w-8 h-8"
+                />
+            </div>
+
+            <!-- Button row -->
+            <div class="flex justify-center space-x-4 mt-4">
+                <button
+                        id="btn-next-retry"
+                        class="px-6 py-2 rounded bg-yellow-500 hover:bg-yellow-600 text-white font-semibold cursor-pointer hidden"
+                >
+                    Coba Lagi
+                </button>
+                <button
+                        id="btn-next-level"
+                        class="px-6 py-2 rounded bg-green-500 hover:bg-green-600 text-white font-semibold cursor-pointer"
+                >
+                    Level Berikutnya
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Failure Popup -->
+    <div
+            id="popup-failure"
+            class="fixed inset-0 flex items-center justify-center z-50 hidden"
+    >
+        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="relative bg-white rounded-lg shadow-xl p-8 max-w-sm w-full text-center">
+            <h2 class="text-3xl font-bold mb-4 text-red-600">Level Gagal</h2>
+            <button
+                    id="btn-retry"
+                    class="mt-4 px-6 py-2 rounded bg-red-500 hover:bg-red-600 text-white font-semibold cursor-pointer"
+            >
+                Coba Lagi
+            </button>
+        </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
-</body>
+ </body>
 </html>

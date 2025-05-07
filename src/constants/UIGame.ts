@@ -1,0 +1,13 @@
+export const UIGame = {
+  GAME_WIDTH: 960,
+  GAME_HEIGHT: 540,
+  BOARD_W: 960,
+  BOARD_H: 380,
+  GRID_COLS: 12,
+  GRID_ROWS: 5,
+  TILE_SIZE: 76,
+  UI_STATS_H: 40,
+  UI_QUEUE_H: 60,
+  UI_SRC_H: 60,
+  SLOT_SIZE: 50,
+};
