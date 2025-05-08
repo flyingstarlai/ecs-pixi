@@ -5,6 +5,7 @@ import { UIGame } from "../../constants/UIGame.ts";
 
 export class WorldContainerSystem extends System {
   public container!: Container;
+  persistent = true;
 
   async prepare() {
     const pixiSys = this.world.getSystem(PixiAppSystem);

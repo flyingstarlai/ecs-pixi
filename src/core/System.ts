@@ -12,6 +12,9 @@ export abstract class System {
   /** Populated by the world right before `prepare()` is called. */
   #world!: World;
 
+  persistent = false;
+  _hasRunPrepare = false;
+
   /** Internal – called by World once the system is registered. */
   _attach(world: World): void {
     this.#world = world;

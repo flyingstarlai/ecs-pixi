@@ -18,6 +18,10 @@ export class AssetLoadSystem extends System {
   public environment!: EnvTex;
   public item!: ItemTex;
 
+  public isDone = false;
+
+  public readonly persistent = true;
+
   async prepare() {
     registerSpriteBundles();
     [this.ui, this.hero, this.enemy, this.item, this.environment] =
@@ -28,6 +32,9 @@ export class AssetLoadSystem extends System {
         loadBundle("item"),
         loadBundle("environment"),
       ]);
+    console.log("prepare assets");
+
+    this.isDone = true;
   }
   initialize() {}
   execute() {}

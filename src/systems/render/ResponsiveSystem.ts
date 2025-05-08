@@ -9,6 +9,7 @@ export class ResponsiveSystem extends System {
   private root!: Container;
   private sizeEntityId!: number;
   private resizeHandler!: () => void;
+  persistent = true;
 
   async prepare() {
     this.app = this.world.getSystem(PixiAppSystem)!.app;
@@ -18,6 +19,7 @@ export class ResponsiveSystem extends System {
     if (existing) {
       this.sizeEntityId = existing[0].id;
     } else {
+      console.log("Create window entity");
       const e = this.world
         .createEntity()
         .addComponent(WindowSize, new WindowSize(0, 0));

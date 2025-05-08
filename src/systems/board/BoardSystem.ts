@@ -51,8 +51,13 @@ export class BoardSystem extends System {
   private goalPositions: { col: number; row: number }[] = [];
   private startPositions: { col: number; row: number }[] = [];
 
+  constructor(private levelId: number) {
+    super();
+  }
+
   /* All work is done up-front; nothing to do every frame */
   async prepare() {
+    console.log(`Loading level: ${this.levelId}`);
     this.createLevel(level.collectible.length, level.obstacle.length);
     this.spawnTiles();
 

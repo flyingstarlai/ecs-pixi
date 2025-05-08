@@ -28,9 +28,10 @@ export class EntityRenderSystem extends System {
   private donut!: Texture;
   private flag!: Texture;
 
-  initialize() {
+  async prepare() {
     const assets = this.world.getSystem(AssetLoadSystem)!;
     const gridCtn = this.world.getSystem(BoardRenderSystem)!.gridCtn;
+    console.log("gridCtn", gridCtn);
     this.heroSheet = assets.hero.atlas as unknown as Spritesheet;
     this.enemy = assets.enemy.monster;
     this.donut = assets.item.donut;

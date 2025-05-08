@@ -1,15 +1,17 @@
-import { Application, Container } from "pixi.js";
+import { Application } from "pixi.js";
 import { initDevtools } from "@pixi/devtools";
 
 import { System } from "../../core/System.ts";
 
 export class PixiAppSystem extends System {
   public app!: Application;
-  public gameCtn!: Container;
+  public readonly persistent = true;
 
   async prepare() {
     this.app = new Application();
     const pixiContainer = document.getElementById("pixi-container")!;
+
+    console.log("create pixi canvas");
 
     await this.app.init({
       background: "#1099bb",
@@ -20,7 +22,7 @@ export class PixiAppSystem extends System {
   }
 
   initialize() {
-    this.app.ticker.add(({ deltaMS }) => this.world.execute(deltaMS));
+    // this.app.ticker.add(({ deltaMS }) => this.world.execute(deltaMS));
   }
 
   execute() {}

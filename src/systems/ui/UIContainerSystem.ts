@@ -5,7 +5,7 @@ import { PixiAppSystem } from "../render/PixiAppSystem.ts";
 export class UIContainerSystem extends System {
   /** Root container for UI elements */
   public container!: Container;
-
+  persistent = true;
   async prepare() {
     const pixiSys = this.world.getSystem(PixiAppSystem);
     if (!pixiSys) {
